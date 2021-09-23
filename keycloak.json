@@ -1,0 +1,10 @@
+{
+  "realm": "gitlab",
+  "auth-server-url": "http://localhost:8080/auth/",
+  "ssl-required": "external",
+  "resource": "feature-flag",
+  "credentials": {
+    "secret": "f93576fe-994f-42aa-bd40-aedc371bb9a2"
+  },
+  "confidential-port": 0
+}
