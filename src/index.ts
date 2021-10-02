@@ -7,14 +7,12 @@ import KeycloakService from "./services/keycloak.service";
 import session from "express-session";
 import morgan from "morgan";
 
-const swig = require("swig-templates");
 const app = express();
 
 class App {
   private memoryStore = new session.MemoryStore();
 
   constructor(private app: express.Application) {
-    this.configs();
     this.adapters();
     this.middlewares();
     this.publicRoutes();
@@ -23,12 +21,6 @@ class App {
     this.rootRoute();
   }
 
-  private configs() {
-    // usando o model engine swig
-    this.app.engine("html", swig.renderFile);
-    this.app.set("view engine", "html");
-    this.app.set("views", __dirname + "/views");
-  }
 
   private adapters() {
     // Define o adaptador a ser utilizado para integrar com o Keycloak
@@ -63,7 +55,20 @@ class App {
     );
   }
 
-  private publicRoutes() {}
+  private publicRoutes() {
+    this.app.get("/", (req, res) => {
+      res.send(`
+      <html lang="en">
+        <body style="display: flex">
+          <div style="width: 20%">
+            <div><a href="/login">Login</a></div>
+            <div><a href="/logout">Logout</a></div>
+          </div>
+        </body>
+      </html>
+    `)
+    });
+  }
 
   private privateRoutes() {
     this.app.use(
