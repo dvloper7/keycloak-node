@@ -1,6 +1,6 @@
-FROM node:16
+FROM node:15
 
-WORKDIR /usr/share/app
+WORKDIR /app
 
 ENV KEYCLOAK_USER=admin
 ENV KEYCLOAK_PASSWORD=admin
@@ -14,12 +14,13 @@ ENV KEYCLOAK_VERIFY_TOKEN_AUDIENCE=true,
 ENV KEYCLOAK_CREDENTIALS_SECRET=7f48dc36-b1b3-47b3-b92d-6a8e58a47fd9
 ENV SESSION_SECRET=f9k2cz05
 
-COPY ./ /usr/share/app/
+COPY . .
 
 RUN npm install
 RUN npm run build
 
-ENTRYPOINT ["npm" "run serve" ]
-
 EXPOSE 3000
+
+ENTRYPOINT ["npm" "run build"]
+
 

@@ -6,6 +6,13 @@ import KeycloakConnectAdapter from "./adapters/keycloak/keycloak-connect.adapter
 import KeycloakService from "./services/keycloak.service";
 import session from "express-session";
 import morgan from "morgan";
+import rateLimit from "express-rate-limit";
+
+// configura a quantida de requisições por minuto
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
 
 const app = express();
 
@@ -21,7 +28,6 @@ class App {
     this.rootRoute();
   }
 
-
   private adapters() {
     // Define o adaptador a ser utilizado para integrar com o Keycloak
     KeycloakService.adapter(new KeycloakConnectAdapter());
@@ -29,6 +35,7 @@ class App {
   }
 
   private middlewares() {
+    this.app.use(limiter);
     this.app.use(cors());
     this.app.use(helmet());
     // Configuração do Express Session
@@ -66,7 +73,7 @@ class App {
           </div>
         </body>
       </html>
-    `)
+    `);
     });
   }
 
